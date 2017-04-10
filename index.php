@@ -3,14 +3,14 @@
 <meta charset="utf-8">
 
 <!-- the title tag should be 60 characters or less -->
-<title>Insert a very descriptive title here.</title>
+<title>Sprite Maker</title>
  
 
 <!-- meta description must be limited to 160 characters or less -->
-<meta name="description" content="Insert a very descriptive short sentence here.">
+<meta name="description" content="Sprite Maker">
  
 
-<meta name="author" content="Eric Girouard">
+<meta name="author" content="Brad Phillips">
 
 <link href='http://fonts.googleapis.com/css?family=Roboto+Condensed|Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
 <link href="css/style.css" rel="stylesheet" type="text/css">
