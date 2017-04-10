@@ -60,7 +60,6 @@ if(isset($_FILES["file"]["type"])) {
 				$json_data = '{"rows":' . json_encode($pixel_rows) . "," . 
 							 '"colors":' . json_encode($colors) . '}';
 
-				print($json_data);
 				$filename = explode(".", $_FILES["file"]["name"], 2);
 				$base_filename = $filename[0];			
 	
