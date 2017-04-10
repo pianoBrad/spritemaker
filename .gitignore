@@ -1,0 +1,5 @@
+uploads/*
+spritemaps/*
+
+!README.txt
+!*README.txt
