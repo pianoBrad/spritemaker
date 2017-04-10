@@ -30,25 +30,37 @@ if(isset($_FILES["file"]["type"])) {
 				$imagick = new \Imagick(realpath($targetPath));
 				$imageIterator = $imagick->getPixelIterator();
 
-				foreach ($imageIterator as $row => $pixels) { /* Loop through pixel rows */
-					foreach ($pixels as $column => $pixel) { /* Loop through the pixels in the row (columns) */
-						
-						//array_push($pixel_array, $pixel->getColor());
-						$pixelColors = $pixel->getColor();
-						$rgbaString = $pixelColors['r'] . "," . 
-									  $pixelColors['g'] . "," . 
-									  $pixelColors['b'] . "," . 
-									  $pixelColors['a'];
-						if ($pixelColors['a'] <= 0) {
-							$rgbaString = "0";
-						}
 
-						array_push($pixel_array, ["rgba" => $rgbaString]);
+				$allColors = [];
+				// Grab palette for colors used in sprite 
+				foreach ($imageIterator as $row => $pixels) {
+					foreach ($pixels as $column => $pixel) {
+						$rgbaString = getRgbaString($pixel->getColor()); 
+						array_push($allColors, $rgbaString);
 					}
-					$imageIterator->syncIterator(); /* Sync the iterator, this is important to do on each iteration */
+					$imageIterator->syncIterator();
 				}
+				$colors = array_unique($allColors);
 
-				$json_data = '{"pixels":' . json_encode($pixel_array) . '}';
+				// Create array for rows for each pixel
+				$pixel_rows = [];
+				foreach ($imageIterator as $row => $pixels) {
+					$colors_row = "";
+					foreach($pixels as $column => $pixel) {
+						$rgba_string = getRgbaString($pixel->getColor());			
+			
+						$color_key = array_search($rgba_string, $colors);
+						$colors_row .= $color_key;
+						
+					}
+					array_push($pixel_rows, $colors_row);
+					$imageIterator->syncIterator();	
+				}
+				
+				$json_data = '{"rows":' . json_encode($pixel_rows) . "," . 
+							 '"colors":' . json_encode($colors) . '}';
+
+				print($json_data);
 				$filename = explode(".", $_FILES["file"]["name"], 2);
 				$base_filename = $filename[0];			
 	
@@ -62,5 +74,15 @@ if(isset($_FILES["file"]["type"])) {
 	} else {
 		echo "<span id='invalid'>***Invalid file Size or Type***<span>";
 	}
+
 }
+
+function getRgbaString($rgbaArray) {
+    $rgbaString = $rgbaArray['r'] . "," .
+                  $rgbaArray['g'] . "," .
+                  $rgbaArray['b'] . "," .
+                  $rgbaArray['a'];
+    return $rgbaString;
+}
+
 ?>
