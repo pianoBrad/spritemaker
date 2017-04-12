@@ -7,12 +7,17 @@ var total_columns = 23;
 var cur_row = 0;
 var cur_column = 0;
 
+var background_color = "rgba(0,255,255,1)"
+
 function init() {
 	var stage = new createjs.Stage("canvas");
 	var context = stage.canvas.getContext("2d"); 
-	context.webkitImageSmoothingEnabled = context.mozImageSmoothingEnabled = false; 
+	context.webkitImageSmoothingEnabled = context.mozImageSmoothingEnabled = false; 	
 
-	// Draw pixels onto canvas 
+	var backgroundRect = drawPixel(background_color, canvas_w, canvas_h, 0, 0);
+	stage.addChild(backgroundRect);
+
+	// Draw sprite maps onto canvas 
 	for (sprite in sprites) {
 	
 		for(row in sprites[sprite]['rows']) {
@@ -26,12 +31,14 @@ function init() {
 
 			for (var i = 0, len = row_string.length; i < len; i++) {
 				var color_key = parseInt(row_string[i]);
-				console.log(color_key);
+				//console.log(color_key);
 				var pixel_color = sprites[sprite]['colors'][color_key];
+				
+				console.log(pixel_color);
 	
 				var x = (pixel_w * cur_column);
                 var y = (pixel_h * cur_row);
-				
+
 				var pixel = drawPixel(pixel_color, pixel_w, pixel_h, x, y);
 				if (pixel_color.slice(-1) == "0") {	
 					pixel = drawPixel("rgba(0,255,255,1)", pixel_w, pixel_h, x, y);	

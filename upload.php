@@ -35,19 +35,20 @@ if(isset($_FILES["file"]["type"])) {
 				// Grab palette for colors used in sprite 
 				foreach ($imageIterator as $row => $pixels) {
 					foreach ($pixels as $column => $pixel) {
-						$rgbaString = getRgbaString($pixel->getColor()); 
+						$rgbaString = getRgbaString($pixel->getColor(true)); 
 						array_push($allColors, $rgbaString);
 					}
 					$imageIterator->syncIterator();
 				}
-				$colors = array_unique($allColors);
+				$unique_colors = array_unique($allColors);
+				$colors = array_values($unique_colors);
 
 				// Create array for rows for each pixel
 				$pixel_rows = [];
 				foreach ($imageIterator as $row => $pixels) {
 					$colors_row = "";
 					foreach($pixels as $column => $pixel) {
-						$rgba_string = getRgbaString($pixel->getColor());			
+						$rgba_string = getRgbaString($pixel->getColor(true));			
 			
 						$color_key = array_search($rgba_string, $colors);
 						$colors_row .= $color_key;
@@ -77,11 +78,13 @@ if(isset($_FILES["file"]["type"])) {
 }
 
 function getRgbaString($rgbaArray) {
-    $rgbaString = $rgbaArray['r'] . "," .
+	$rgbaString = $rgbaArray['r'] . "," .
                   $rgbaArray['g'] . "," .
                   $rgbaArray['b'] . "," .
-                  $rgbaArray['a'];
-    return $rgbaString;
+                  round($rgbaArray['a'], 2);
+    
+	$rgbaString = "rgba(" . $rgbaString . ")";
+	return $rgbaString;
 }
 
 ?>

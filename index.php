@@ -25,7 +25,7 @@
 		<h1>Sprite Maker</h1><br/>
 		
 		<div id="canvas-wrap">
-			<canvas id="canvas" width="230" height="230"></canvas>
+			<canvas id="canvas" width="300" height="300"></canvas>
 		</div>
 	</div>
 
