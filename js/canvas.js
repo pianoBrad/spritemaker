@@ -34,8 +34,6 @@ function init() {
 				//console.log(color_key);
 				var pixel_color = sprites[sprite]['colors'][color_key];
 				
-				console.log(pixel_color);
-	
 				var x = (pixel_w * cur_column);
                 var y = (pixel_h * cur_row);
 

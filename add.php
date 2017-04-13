@@ -33,6 +33,14 @@
 				<input type="submit" value="Upload" class="submit" />
 			</div>
 		</form>
+		<form id="uploadimage-body" action="" method="post" enctype="multipart/form-data">
+            <hr id="body-line">
+            <div id="selectImageBody">
+                <label>Select Your Body Image</label><br/>
+                <input type="file" name="file" id="file-body" required />
+                <input type="submit" value="Upload" class="submit" />
+            </div>
+        </form>	
 	</div>
 	<h4 id='loading' >loading..</h4>
 	<div id="message"></div>

@@ -11,11 +11,11 @@ if(isset($_FILES["file"]["type"])) {
 		{
 			echo "Return Code: " . $_FILES["file"]["error"] . "<br/><br/>";
 		} else {
-			if (file_exists("uploads/" . $_FILES["file"]["name"])) {
+			if (file_exists("uploads/body" . $_FILES["file"]["name"])) {
 				echo $_FILES["file"]["name"] . " <span id='invalid'><b>already exists.</b></span> ";
 			} else {
 				$sourcePath = $_FILES['file']['tmp_name']; // Storing source path of the file in a variable
-				$targetPath = "uploads/".$_FILES['file']['name']; // Target path where file is to be stored
+				$targetPath = "uploads/body".$_FILES['file']['name']; // Target path where file is to be stored
 				move_uploaded_file($sourcePath,$targetPath) ; // Moving Uploaded file
 				echo "<span id='success'>Image Uploaded Successfully...!!</span><br/>";
 				echo "<br/><b>File Name:</b> " . $_FILES["file"]["name"] . "<br>";
@@ -35,7 +35,7 @@ if(isset($_FILES["file"]["type"])) {
 				// Grab palette for colors used in sprite 
 				foreach ($imageIterator as $row => $pixels) {
 					foreach ($pixels as $column => $pixel) {
-						$rgba_string = getRgbaString($pixel->getColor(), $pixel->getColor(true));
+						$rgbaString = getRgbaString($pixel->getColor(),$pixel->getColor(true)); 
 						array_push($allColors, $rgbaString);
 					}
 					$imageIterator->syncIterator();
@@ -48,8 +48,8 @@ if(isset($_FILES["file"]["type"])) {
 				foreach ($imageIterator as $row => $pixels) {
 					$colors_row = "";
 					foreach($pixels as $column => $pixel) {
-						$rgba_string = getRgbaString($pixel->getColor(), $pixel->getColor(true));		
-	
+						$rgba_string = getRgbaString($pixel->getColor(), $pixel->getColor(true));			
+			
 						$color_key = array_search($rgba_string, $colors);
 						$colors_row .= $color_key;
 						
