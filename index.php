@@ -34,7 +34,8 @@
 	<?php 
 		echo("var sprites = [];");		
 
-		$json_dir = './spritemaps';
+		//This whole thing will probably be json calls on js side instead of php scandirs, in practice
+		$json_dir = './spritemaps/mage/body';
 		$json_dir_files = scandir($json_dir);
 
 		$files_exist = false;
@@ -46,7 +47,6 @@
 				$json_url = $json_dir . '/' . $name;
 				$json_contents = file_get_contents($json_url);
 			
-				//print($json_contents);
 				echo("sprites.push(" . $json_contents . ");");
 			}
 		}

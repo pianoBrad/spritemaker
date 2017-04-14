@@ -2,6 +2,10 @@ var $canvas = $('#canvas');
 var canvas_w = $canvas.width();
 var canvas_h = $canvas.height();
 
+var hero_w = $canvas.width()/3;
+var pixel_w = hero_w/11;
+var pixel_h = pixel_w;
+
 var total_rows = 23;
 var total_columns = 23;
 var cur_row = 0;
@@ -20,12 +24,15 @@ function init() {
 	// Draw sprite maps onto canvas 
 	for (sprite in sprites) {
 	
+		cur_row = 0;
+		cur_column = 0;
+	
 		for(row in sprites[sprite]['rows']) {
 			total_rows = sprites[sprite]['rows'].length;
 			total_columns = total_rows;
 
-			var pixel_w = canvas_w/total_rows;
-			var pixel_h = canvas_h/total_columns;
+			//var pixel_w = canvas_w/total_rows;
+			//var pixel_h = pixel_w;
 
 			var row_string = sprites[sprite]['rows'][row];
 
