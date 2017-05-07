@@ -2,16 +2,19 @@ var $canvas = $('#canvas');
 var canvas_w = $canvas.width();
 var canvas_h = $canvas.height();
 
+var units_x = 40;
+var units_y = 40; 
+
 var hero_w = $canvas.width()/3;
-var pixel_w = hero_w/11;
-var pixel_h = pixel_w;
+var pixel_w = Math.floor(canvas_w/units_x);
+var pixel_h = Math.floor(canvas_h/units_y);
 
 var total_rows = 23;
 var total_columns = 23;
 var cur_row = 0;
 var cur_column = 0;
 
-var background_color = "rgba(0,255,255,1)"
+var background_color = "rgba(0,255,255,1)";
 
 function init() {
 	var stage = new createjs.Stage("canvas");
@@ -22,44 +25,66 @@ function init() {
 	stage.addChild(backgroundRect);
 
 	// Draw sprite maps onto canvas 
-	for (sprite in sprites) {
-	
-		cur_row = 0;
-		cur_column = 0;
-	
-		for(row in sprites[sprite]['rows']) {
-			total_rows = sprites[sprite]['rows'].length;
-			total_columns = total_rows;
+	for (sprite in sprites_body) {
+		// Draw body	
+		drawBodyPart('body', sprites_body, stage);
+	}
 
-			//var pixel_w = canvas_w/total_rows;
-			//var pixel_h = pixel_w;
-
-			var row_string = sprites[sprite]['rows'][row];
-
-			for (var i = 0, len = row_string.length; i < len; i++) {
-				var color_key = parseInt(row_string[i]);
-				//console.log(color_key);
-				var pixel_color = sprites[sprite]['colors'][color_key];
-				
-				var x = (pixel_w * cur_column);
-                var y = (pixel_h * cur_row);
-
-				var pixel = drawPixel(pixel_color, pixel_w, pixel_h, x, y);
-				if (pixel_color.slice(-1) == "0") {	
-					pixel = drawPixel("rgba(0,255,255,1)", pixel_w, pixel_h, x, y);	
-				}
-				stage.addChild(pixel);
-
-				cur_column +=1;
-			}
-			cur_row += 1;
-			cur_column = 0;	
-		}
+	for (sprite in sprites_head) {
+		// Draw head 
+		drawBodyPart('head', sprites_head, stage);
 	}
 
 	stage.update();
 }
 
+function drawBodyPart(body_part, sprites_array, stage, cur_row = 0, cur_column = 0) {
+	switch (body_part) {
+		case 'body':
+			// Center sprite in viewport
+			cur_row = Math.floor((units_y/2) - (sprites_array[sprite]['rows'].length/2));
+			cur_column = Math.floor((units_x/2) - (sprites_array[sprite]['rows'][0].length/2));
+			base_column = cur_column;
+			break;
+		case 'head':
+			cur_row = Math.floor((units_y/2) - ((sprites_body[sprite]['rows'].length) + 1));
+			cur_column = Math.floor((units_x/2) - (sprites_array[sprite]['rows'][0].length/2));
+			base_column = cur_column;
+			break;
+		default:
+			break;
+	}
+
+	for(row in sprites_array[sprite]['rows']) {
+        total_rows = sprites_array[sprite]['rows'].length;
+        total_columns = total_rows;
+
+        var row_string = sprites_array[sprite]['rows'][row];
+
+        for (var i = 0, len = row_string.length; i < len; i++) {
+            var color_key = parseInt(row_string[i]);
+            var pixel_color = sprites_array[sprite]['colors'][color_key];
+			if (body_part == 'head') {
+			//pixel_color = 'rgba(255,255,255,1)';
+			}
+
+            var x = (pixel_w * cur_column);
+            var y = (pixel_h * cur_row);
+
+            var pixel = drawPixel(pixel_color, pixel_w, pixel_h, x, y);
+            if (pixel_color.slice(-1) == "0") {
+                pixel = drawPixel("rgba(0,255,255,1)", pixel_w, pixel_h, x, y);
+            }
+            stage.addChild(pixel);
+
+            cur_column +=1;
+        }
+        cur_row += 1;
+        cur_column = base_column;
+    }
+} 
+
+// Handles the actual drawing of pixels to the canvas/stage
 function drawPixel(color, w, h, x, y) {
 	var pixel = new createjs.Shape();
     pixel.graphics.beginFill(color).drawRect(0, 0, w, h);

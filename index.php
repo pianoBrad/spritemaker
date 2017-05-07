@@ -32,7 +32,8 @@
 	
 	<script>
 	<?php 
-		echo("var sprites = [];");		
+		echo("var sprites_body = [];");		
+		echo("var sprites_head = [];");
 
 		//This whole thing will probably be json calls on js side instead of php scandirs, in practice
 		$json_dir = './spritemaps/mage/body';
@@ -40,14 +41,23 @@
 
 		$files_exist = false;
 
-		foreach ($json_dir_files as $row => $name) {
-			if (strpos($name, '.json') !== false) {
-				$files_exist = true;
+		create_sprite_arrays($json_dir, $json_dir_files, "sprites_body");
 
-				$json_url = $json_dir . '/' . $name;
-				$json_contents = file_get_contents($json_url);
-			
-				echo("sprites.push(" . $json_contents . ");");
+		$json_dir = './spritemaps/mage/head';
+		$json_dir_files = scandir($json_dir);
+
+		create_sprite_arrays($json_dir, $json_dir_files, "sprites_head");
+	
+		function create_sprite_arrays($json_dir, $json_dir_files, $array_name) {
+			foreach ($json_dir_files as $row => $name) {
+				if (strpos($name, '.json') !== false) {
+					$files_exist = true;
+
+					$json_url = $json_dir . '/' . $name;
+					$json_contents = file_get_contents($json_url);
+
+					echo("{$array_name}.push(" . $json_contents . ");");
+				}
 			}
 		}
 
@@ -57,6 +67,26 @@
 	</script>
 
 	<script src="js/canvas.js"></script>
+
+	<?php 
+		function import_sprites($dir, $array_name) {
+			echo("var {$array_name} = [];");
+		
+			$json_dir_files = scandir($dir);
+
+			$files_exist = false;
+			foreach($json_dir_files as $row => $name) {
+				if (strpos($name, '.json') !== false) {
+					$files_exist = true;
+
+					$json_url = $json_dir . '/' . $name;
+					$json_contents = file_get_contents($json_url);
+
+					$cho("sprites.push(" . $json_contents . ");");
+				}
+			}	
+		}
+	?>
 
 </body>
 
