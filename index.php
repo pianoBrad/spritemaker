@@ -25,6 +25,8 @@
 		<h1>Sprite Maker</h1><br/>
 		
 		<div id="canvas-wrap">
+			<!-- idea, add a second canvas and stack for background -->
+			<!-- add 3rd canvas for UI/etc/etc -->
 			<canvas id="canvas" width="300" height="300"></canvas>
 		</div>
 	</div>
@@ -34,6 +36,8 @@
 	<?php 
 		echo("var sprites_body = [];");		
 		echo("var sprites_head = [];");
+		echo("var sprites_leg = [];");
+		echo("var sprites_hat = [];");
 
 		//This whole thing will probably be json calls on js side instead of php scandirs, in practice
 		$json_dir = './spritemaps/mage/body';
@@ -47,7 +51,17 @@
 		$json_dir_files = scandir($json_dir);
 
 		create_sprite_arrays($json_dir, $json_dir_files, "sprites_head");
+
+		$json_dir = './spritemaps/mage/legs/left';
+		$json_dir_files = scandir($json_dir);
+
+		create_sprite_arrays($json_dir, $json_dir_files, "sprites_leg");
 	
+		$json_dir = './spritemaps/mage/hat';
+		$json_dir_files = scandir($json_dir);
+
+		create_sprite_arrays($json_dir, $json_dir_files, "sprites_hat");
+
 		function create_sprite_arrays($json_dir, $json_dir_files, $array_name) {
 			foreach ($json_dir_files as $row => $name) {
 				if (strpos($name, '.json') !== false) {

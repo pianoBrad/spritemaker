@@ -11,6 +11,7 @@ var pixel_h = Math.floor(canvas_h/units_y);
 
 var total_rows = 23;
 var total_columns = 23;
+var base_column = 0;
 var cur_row = 0;
 var cur_column = 0;
 
@@ -24,7 +25,13 @@ function init() {
 	var backgroundRect = drawPixel(background_color, canvas_w, canvas_h, 0, 0);
 	stage.addChild(backgroundRect);
 
-	// Draw sprite maps onto canvas 
+	// Draw sprite maps onto canvas
+
+	for (sprite in sprites_leg) {
+		// Draw leg
+		drawBodyPart('leg-left', sprites_leg, stage);
+	}
+	 
 	for (sprite in sprites_body) {
 		// Draw body	
 		drawBodyPart('body', sprites_body, stage);
@@ -40,20 +47,23 @@ function init() {
 
 function drawBodyPart(body_part, sprites_array, stage, cur_row = 0, cur_column = 0) {
 	switch (body_part) {
+		case 'leg-left':
+			cur_row = Math.floor((units_y/2) + (((sprites_body[sprite]['rows'].length)/2) - 2));
+			cur_column = Math.floor((units_x/2) - (sprites_body[sprite]['rows'][0].length/2));
+			break;
 		case 'body':
 			// Center sprite in viewport
 			cur_row = Math.floor((units_y/2) - (sprites_array[sprite]['rows'].length/2));
 			cur_column = Math.floor((units_x/2) - (sprites_array[sprite]['rows'][0].length/2));
-			base_column = cur_column;
 			break;
 		case 'head':
 			cur_row = Math.floor((units_y/2) - ((sprites_body[sprite]['rows'].length) + 1));
 			cur_column = Math.floor((units_x/2) - (sprites_array[sprite]['rows'][0].length/2));
-			base_column = cur_column;
 			break;
 		default:
 			break;
 	}
+	base_column = cur_column;
 
 	for(row in sprites_array[sprite]['rows']) {
         total_rows = sprites_array[sprite]['rows'].length;
