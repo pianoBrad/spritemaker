@@ -36,7 +36,8 @@
 	<?php 
 		echo("var sprites_body = [];");		
 		echo("var sprites_head = [];");
-		echo("var sprites_leg = [];");
+		echo("var sprites_leg_left = [];");
+		echo("var sprites_leg_right = [];");
 		echo("var sprites_hat = [];");
 
 		//This whole thing will probably be json calls on js side instead of php scandirs, in practice
@@ -55,8 +56,13 @@
 		$json_dir = './spritemaps/mage/legs/left';
 		$json_dir_files = scandir($json_dir);
 
-		create_sprite_arrays($json_dir, $json_dir_files, "sprites_leg");
-	
+		create_sprite_arrays($json_dir, $json_dir_files, "sprites_leg_left");
+
+		$json_dir = './spritemaps/mage/legs/right';
+		$json_dir_files = scandir($json_dir);
+
+		create_sprite_arrays($json_dir, $json_dir_files, "sprites_leg_right");	
+
 		$json_dir = './spritemaps/mage/hat';
 		$json_dir_files = scandir($json_dir);
 

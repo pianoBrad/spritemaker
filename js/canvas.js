@@ -27,9 +27,13 @@ function init() {
 
 	// Draw sprite maps onto canvas
 
-	for (sprite in sprites_leg) {
-		// Draw leg
-		drawBodyPart('leg-left', sprites_leg, stage);
+	for (sprite in sprites_leg_left) {
+		// Draw left leg
+		drawBodyPart('leg-left', sprites_leg_left, stage);
+	}
+	for (sprite in sprites_leg_right) {
+		// Draw right leg
+		drawBodyPart('leg-right', sprites_leg_right, stage);
 	}
 	 
 	for (sprite in sprites_body) {
@@ -50,6 +54,10 @@ function drawBodyPart(body_part, sprites_array, stage, cur_row = 0, cur_column =
 		case 'leg-left':
 			cur_row = Math.floor((units_y/2) + (((sprites_body[sprite]['rows'].length)/2) - 2));
 			cur_column = Math.floor((units_x/2) - (sprites_body[sprite]['rows'][0].length/2));
+			break;
+		case 'leg-right':
+			cur_row = Math.floor((units_y/2) + (((sprites_body[sprite]['rows'].length)/2) - 2));
+			cur_column = Math.floor((units_x/2) + (sprites_body[sprite]['rows'][0].length/2));
 			break;
 		case 'body':
 			// Center sprite in viewport

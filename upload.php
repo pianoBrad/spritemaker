@@ -35,7 +35,7 @@ if(isset($_FILES["file"]["type"])) {
 				// Grab palette for colors used in sprite 
 				foreach ($imageIterator as $row => $pixels) {
 					foreach ($pixels as $column => $pixel) {
-						$rgba_string = getRgbaString($pixel->getColor(), $pixel->getColor(true));
+						$rgbaString = getRgbaString($pixel->getColor(), $pixel->getColor(true));
 						array_push($allColors, $rgbaString);
 					}
 					$imageIterator->syncIterator();
