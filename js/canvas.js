@@ -57,7 +57,7 @@ function drawBodyPart(body_part, sprites_array, stage, cur_row = 0, cur_column =
 			break;
 		case 'leg-right':
 			cur_row = Math.floor((units_y/2) + (((sprites_body[sprite]['rows'].length)/2) - 2));
-			cur_column = Math.floor((units_x/2) + (sprites_body[sprite]['rows'][0].length/2));
+			cur_column = Math.floor((units_x/2) + ((sprites_body[sprite]['rows'][0].length/2) - (sprites_array[sprite]['rows'][0].length)));
 			break;
 		case 'body':
 			// Center sprite in viewport
