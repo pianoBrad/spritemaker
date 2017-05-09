@@ -29,6 +29,12 @@
 			<!-- add 3rd canvas for UI/etc/etc -->
 			<canvas id="canvas" width="300" height="300"></canvas>
 		</div>
+		<div class="creator-ui">
+			<h3 class="section-title">Skin Color</h3>
+			<ul class="skin-color">
+				<li><a href="#">next</a></li>
+			</ul>
+		</div>
 	</div>
 
 	

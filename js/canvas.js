@@ -1,6 +1,7 @@
 var $canvas = $('#canvas');
 var canvas_w = $canvas.width();
 var canvas_h = $canvas.height();
+var stage;
 
 var units_x = 40;
 var units_y = 40; 
@@ -15,41 +16,61 @@ var base_column = 0;
 var cur_row = 0;
 var cur_column = 0;
 
+var head_offset = 1;
+
 var background_color = "rgba(0,255,255,1)";
 
+/** Creator UI Vars **/
+var skin_colors = ["rgba(255,0,0,1)","rgba(255,255,0,1)","rgba(0,255,0,1)","rgba(0,0,255,1)"];
+var cur_skin_color = -1;
+
 function init() {
-	var stage = new createjs.Stage("canvas");
+	setupListeners();	
+
+	stage = new createjs.Stage("canvas");
 	var context = stage.canvas.getContext("2d"); 
 	context.webkitImageSmoothingEnabled = context.mozImageSmoothingEnabled = false; 	
 
+	drawHero();
+
+}
+
+function drawHero() {
+
 	var backgroundRect = drawPixel(background_color, canvas_w, canvas_h, 0, 0);
-	stage.addChild(backgroundRect);
+    stage.addChild(backgroundRect);	
 
 	// Draw sprite maps onto canvas
 
-	for (sprite in sprites_leg_left) {
-		// Draw left leg
-		drawBodyPart('leg-left', sprites_leg_left, stage);
-	}
-	for (sprite in sprites_leg_right) {
-		// Draw right leg
-		drawBodyPart('leg-right', sprites_leg_right, stage);
-	}
-	 
-	for (sprite in sprites_body) {
-		// Draw body	
-		drawBodyPart('body', sprites_body, stage);
-	}
+    for (sprite in sprites_leg_left) {
+        // Draw left leg
+        drawBodyPart('leg-left', sprites_leg_left, stage);
+    }
+    for (sprite in sprites_leg_right) {
+        // Draw right leg
+        drawBodyPart('leg-right', sprites_leg_right, stage);
+    }
 
-	for (sprite in sprites_head) {
-		// Draw head 
-		drawBodyPart('head', sprites_head, stage);
-	}
+    for (sprite in sprites_body) {
+        // Draw body
+        drawBodyPart('body', sprites_body, stage);
+    }
 
-	stage.update();
+    for (sprite in sprites_head) {
+        // Draw head
+        drawBodyPart('head', sprites_head, stage);
+    }
+
+    for (sprite in sprites_hat) {
+        // Draw hat
+        drawBodyPart('hat', sprites_hat, stage);
+    }
+	
+	stage.update();	
 }
 
-function drawBodyPart(body_part, sprites_array, stage, cur_row = 0, cur_column = 0) {
+function drawBodyPart(body_part, sprites_array, stage, cur_row = 0, cur_column = 0, skin_color = "") {
+	// TODO: Swap out these crazy maths with functions to calculate width/height of the various pieces
 	switch (body_part) {
 		case 'leg-left':
 			cur_row = Math.floor((units_y/2) + (((sprites_body[sprite]['rows'].length)/2) - 2));
@@ -65,7 +86,14 @@ function drawBodyPart(body_part, sprites_array, stage, cur_row = 0, cur_column =
 			cur_column = Math.floor((units_x/2) - (sprites_array[sprite]['rows'][0].length/2));
 			break;
 		case 'head':
-			cur_row = Math.floor((units_y/2) - ((sprites_body[sprite]['rows'].length) + 1));
+			cur_row = Math.floor((units_y/2) - ((sprites_body[sprite]['rows'].length) + head_offset));
+			cur_column = Math.floor((units_x/2) - (sprites_array[sprite]['rows'][0].length/2));
+			if (cur_skin_color > 0) {
+				skin_color = skin_colors[cur_skin_color];
+			}
+			break;
+		case 'hat':
+			cur_row = Math.floor(((units_y)/2 - (sprites_array[sprite]['rows'].length)) - (sprites_body[sprite]['rows'].length/2 + (sprites_head[sprite]['rows'].length) - (head_offset + 5)));
 			cur_column = Math.floor((units_x/2) - (sprites_array[sprite]['rows'][0].length/2));
 			break;
 		default:
@@ -111,4 +139,18 @@ function drawPixel(color, w, h, x, y) {
 	pixel.y = y;	
 
 	return pixel;
+}
+
+function setupListeners() {
+	$('.creator-ui .skin-color a').on('click', function(e) {
+		e.preventDefault();
+		
+		if (cur_skin_color < 0 || cur_skin_color < skin_colors.length ) {
+			cur_skin_color++;
+		} else {
+			cur_skin_color = 0;
+		}
+		
+		drawHero();
+	});
 }
