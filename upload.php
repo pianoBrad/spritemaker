@@ -40,6 +40,13 @@ if(isset($_FILES["file"]["type"])) {
 					}
 					$imageIterator->syncIterator();
 				}
+				
+				// Identify primary color (going with most used, for now)
+				$clearColors = array("rgba(255,255,255,0)");
+				$allColorsMinusClear = array_diff($allColors, $clearColors);
+				$color_counts = array_count_values($allColorsMinusClear);
+				$primary_color = array_search(max($color_counts), $color_counts);
+			
 				$unique_colors = array_unique($allColors);
 				$colors = array_values($unique_colors);
 
@@ -59,7 +66,8 @@ if(isset($_FILES["file"]["type"])) {
 				}
 				
 				$json_data = '{"rows":' . json_encode($pixel_rows) . "," . 
-							 '"colors":' . json_encode($colors) . '}';
+							 '"colors":' . json_encode($colors) . "," . 
+							 '"primary_color":"' . $primary_color . '"}';
 
 				$filename = explode(".", $_FILES["file"]["name"], 2);
 				$base_filename = $filename[0];			
