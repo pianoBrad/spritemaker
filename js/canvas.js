@@ -153,7 +153,7 @@ function setupListeners() {
 		if (cur_skin_color < 0 || cur_skin_color < skin_colors.length ) {
 			cur_skin_color++;
 		} else {
-			cur_skin_color = -1;
+			cur_skin_color = 0;
 		}
 		
 		drawHero();
