@@ -88,7 +88,7 @@ function drawBodyPart(body_part, sprites_array, stage, cur_row = 0, cur_column =
 		case 'head':
 			cur_row = Math.floor((units_y/2) - ((sprites_body[sprite]['rows'].length) + head_offset));
 			cur_column = Math.floor((units_x/2) - (sprites_array[sprite]['rows'][0].length/2));
-			if (cur_skin_color > 0) {
+			if (cur_skin_color >= 0) {
 				skin_color = skin_colors[cur_skin_color];
 			}
 			break;
@@ -105,13 +105,18 @@ function drawBodyPart(body_part, sprites_array, stage, cur_row = 0, cur_column =
         total_rows = sprites_array[sprite]['rows'].length;
         total_columns = total_rows;
 
+		var primary_color = sprites_array[sprite]['primary_color'];
         var row_string = sprites_array[sprite]['rows'][row];
 
         for (var i = 0, len = row_string.length; i < len; i++) {
             var color_key = parseInt(row_string[i]);
-            var pixel_color = sprites_array[sprite]['colors'][color_key];
-			if (body_part == 'head') {
-			//pixel_color = 'rgba(255,255,255,1)';
+            var pixel_color = sprites_array[sprite]['colors'][color_key];			
+
+			if (body_part == 'head' && typeof skin_color !== 'undefined' && skin_color.length > 0) {
+				//change skin color
+				if (pixel_color == primary_color) {
+					pixel_color = skin_color;
+				}
 			}
 
             var x = (pixel_w * cur_column);
@@ -148,7 +153,7 @@ function setupListeners() {
 		if (cur_skin_color < 0 || cur_skin_color < skin_colors.length ) {
 			cur_skin_color++;
 		} else {
-			cur_skin_color = 0;
+			cur_skin_color = -1;
 		}
 		
 		drawHero();
