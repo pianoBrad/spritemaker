@@ -58,7 +58,7 @@ function drawHero() {
 
     for (sprite in sprites_head) {
         // Draw head
-        drawBodyPart('head', sprites_head, stage);
+         drawBodyPart('head', sprites_head, stage);
     }
 
     for (sprite in sprites_hat) {
